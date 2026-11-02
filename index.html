@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lendi Campus Navigator</title>
+
+  <!-- Leaflet CSS (the map library's styles). Must come BEFORE our own CSS. -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"
+  />
+
+  <!-- Our own styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Top bar: the controls the user interacts with -->
+  <header class="topbar">
+    <h1>Lendi Campus Navigator</h1>
+
+    <div class="controls">
+      <label for="start-select">From</label>
+      <select id="start-select">
+        <option value="">Choose start</option>
+      </select>
+
+      <label for="end-select">To</label>
+      <select id="end-select">
+        <option value="">Choose destination</option>
+      </select>
+
+      <button id="route-btn" type="button">Find route</button>
+      <button id="gps-btn" type="button">Use my location</button>
+    </div>
+
+    <!-- Distance and walking time will be shown here -->
+    <p id="route-info" aria-live="polite"></p>
+  </header>
+
+  <!-- The map goes inside this empty box. map.js will fill it. -->
+  <main id="map"></main>
+
+  <!-- Leaflet JS. Must load BEFORE our own scripts so "L" exists. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+
+  <!-- Our entry file. It is a module, so ui.js can import the other files. -->
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>

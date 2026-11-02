@@ -1,0 +1,122 @@
+/* ---------- Colors and sizes in one place ---------- */
+:root {
+  --ink: #17212b;
+  --surface: #ffffff;
+  --page: #eef1f4;
+  --border: #cfd6dd;
+  --accent: #0b6e4f;
+  --accent-dark: #09593f;
+  --radius: 6px;
+}
+
+/* Make width/height include padding and borders (much easier to reason about) */
+* {
+  box-sizing: border-box;
+}
+
+/* ---------- Page layout ---------- */
+/* The page is one column: top bar on top, map fills ALL the remaining space */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--page);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar h1 {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap; /* on small screens, items drop to the next line */
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.controls label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.controls select {
+  min-width: 160px;
+  padding: 8px 10px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.controls button {
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background: var(--accent-dark);
+}
+
+/* "Use my location" is a secondary action, so it looks lighter */
+#gps-btn {
+  color: var(--accent);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+}
+
+#gps-btn:hover {
+  color: #fff;
+  background: var(--accent);
+}
+
+/* Keyboard users can see where they are */
+.controls select:focus-visible,
+.controls button:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+/* The distance / time line under the controls */
+#route-info {
+  margin: 10px 0 0;
+  min-height: 1.2em; /* keeps the layout from jumping when text appears */
+  font-size: 0.95rem;
+}
+
+/* ---------- Map ---------- */
+/* IMPORTANT: Leaflet needs the map box to have a height, or you see nothing. */
+#map {
+  flex: 1; /* take all the space left under the top bar */
+  min-height: 300px;
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 520px) {
+  .controls select {
+    flex: 1; /* dropdowns stretch to fill the row */
+    min-width: 0;
+  }
+}

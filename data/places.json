@@ -1,0 +1,13 @@
+[
+  { "name": "Sai Block", "lat": 18.020178, "lng": 83.400869 },
+  { "name": "Mechanical block", "lat": 18.019865, "lng": 83.401377 },
+  { "name": "Canteen", "lat": 18.019688, "lng": 83.401008 },
+  { "name": "Boys hostel", "lat": 18.01851, "lng": 83.401899 },
+  { "name": "Girls hostel", "lat": 18.02082, "lng": 83.401356 },
+  { "name": "Main gate", "lat": 18.020667, "lng": 83.402478 },
+  { "name": "Parking", "lat": 18.02032, "lng": 83.402387 },
+  { "name": "Lendi Grounds", "lat": 18.019178, "lng": 83.401791 },
+  { "name": "Basketball court", "lat": 18.019877, "lng": 83.401754 },
+  { "name": "Toilet", "lat": 18.019668, "lng": 83.40074 },
+  { "name": "Garden", "lat": 18.020479, "lng": 83.401572 }
+]
