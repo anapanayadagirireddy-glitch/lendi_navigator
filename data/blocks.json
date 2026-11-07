@@ -1,0 +1,583 @@
+{
+    "blocks": [
+        {
+            "id": "sai-block",
+            "name": "Sai Block",
+            "aliases": [
+                "Main Building",
+                "Main Block",
+                "Shiridi Sai Block"
+            ],
+            "entranceNote": "Use the main entrance at the front (portico side). Left and right are as you face the building from the portico. Behind the front block, a left wing and a right wing go back. Outer side = the side away from the central open area. Inner side = the side facing it.",
+            "floors": [
+                {
+                    "floor": "Ground floor",
+                    "classes": [],
+                    "labs": [
+                        {
+                            "name": "UNIX and Advanced Java, Web Technologies Lab",
+                            "directions": "Left wing, outer side, the long lab along the left edge",
+                            "keywords": [
+                                "unix",
+                                "java",
+                                "web technologies",
+                                "wt"
+                            ]
+                        },
+                        {
+                            "name": "BEE, NTET and EDC Lab",
+                            "directions": "Right wing, inner side, back end (far from the entrance)",
+                            "verify": true
+                        },
+                        {
+                            "name": "Electrical Machines Lab",
+                            "directions": "Right wing, inner side, the long lab below the BEE, NTET and EDC Lab"
+                        },
+                        {
+                            "name": "FM and HM Lab",
+                            "directions": "Right wing, outer side, back end"
+                        },
+                        {
+                            "name": "Computer Lab-2 (C Programming Lab and IT Workshop)",
+                            "directions": "Right wing, outer side, front half",
+                            "keywords": [
+                                "c programming",
+                                "it workshop",
+                                "computer lab"
+                            ]
+                        },
+                        {
+                            "name": "Power Systems Lab",
+                            "directions": "Front block, right of the Examination Cell"
+                        }
+                    ],
+                    "staffRooms": [],
+                    "others": [
+                        {
+                            "name": "Management Room",
+                            "directions": "Left wing, outer side, back end"
+                        },
+                        {
+                            "name": "Guest Room",
+                            "directions": "Left wing, outer side, below the Management Room"
+                        },
+                        {
+                            "name": "Health Centre",
+                            "directions": "Left wing, outer side, below the Guest Room"
+                        },
+                        {
+                            "name": "Girls Waiting Hall",
+                            "directions": "Left wing, inner side, back end, next to the toilets",
+                            "verify": true
+                        },
+                        {
+                            "name": "Seminar Hall-1",
+                            "directions": "Left wing, inner side, the large hall"
+                        },
+                        {
+                            "name": "Open Auditorium",
+                            "directions": "Centre of the building between the two wings, in front of the curved staircase"
+                        },
+                        {
+                            "name": "Seminar Hall-2",
+                            "directions": "Front block, far left end"
+                        },
+                        {
+                            "name": "Administrative Office",
+                            "directions": "Front block, left of the entrance lobby"
+                        },
+                        {
+                            "name": "Office Account",
+                            "directions": "Front block, just left of the Help Desk"
+                        },
+                        {
+                            "name": "Help Desk",
+                            "directions": "Front block, left side of the entrance lobby"
+                        },
+                        {
+                            "name": "Entrance Lobby",
+                            "directions": "Front block, centre, just inside the main entrance"
+                        },
+                        {
+                            "name": "Examination Cell",
+                            "directions": "Front block, right of the entrance lobby"
+                        },
+                        {
+                            "name": "Accounts Section",
+                            "directions": "Front block, far right end"
+                        },
+                        {
+                            "name": "Toilets",
+                            "directions": "Back end of each wing"
+                        }
+                    ]
+                },
+                {
+                    "floor": "1st floor",
+                    "classes": [
+                        {
+                            "name": "ECE LH-1",
+                            "directions": "Left wing, outer side, nearest the front"
+                        },
+                        {
+                            "name": "ECE LH-2",
+                            "directions": "Left wing, outer side, middle"
+                        },
+                        {
+                            "name": "ECE LH-3",
+                            "directions": "Left wing, outer side, back end"
+                        },
+                        {
+                            "name": "ECE LH-4",
+                            "directions": "Left wing, inner side, back end"
+                        },
+                        {
+                            "name": "ECE LH-5",
+                            "directions": "Left wing, inner side, middle"
+                        },
+                        {
+                            "name": "ECE LH-6",
+                            "directions": "Left wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "CSE LH-1",
+                            "directions": "Right wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "CSE LH-2",
+                            "directions": "Right wing, inner side, middle"
+                        },
+                        {
+                            "name": "CSE LH-3",
+                            "directions": "Right wing, inner side, back end"
+                        },
+                        {
+                            "name": "CSE LH-4",
+                            "directions": "Right wing, outer side, back end"
+                        },
+                        {
+                            "name": "CSE LH-5",
+                            "directions": "Right wing, outer side, second from the back"
+                        },
+                        {
+                            "name": "CSE LH-6",
+                            "directions": "Right wing, outer side, third from the back"
+                        },
+                        {
+                            "name": "CSE LH-7",
+                            "directions": "Right wing, outer side, nearest the front"
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "English Communication Lab",
+                            "directions": "Front block, far left end"
+                        },
+                        {
+                            "name": "Projects Lab",
+                            "directions": "Front block, right of the Principal's Office"
+                        },
+                        {
+                            "name": "OS, Java and DBMS Lab",
+                            "directions": "Front block, far right end",
+                            "keywords": [
+                                "os",
+                                "java",
+                                "dbms",
+                                "database",
+                                "operating system"
+                            ]
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "ECE Staff Rooms",
+                            "directions": "Left wing, between the classrooms and at the back end"
+                        },
+                        {
+                            "name": "ECE HOD Room",
+                            "directions": "Left wing, front end, near the main corridor"
+                        },
+                        {
+                            "name": "CSE Staff Rooms",
+                            "directions": "Right wing, between the classrooms and at the back end"
+                        },
+                        {
+                            "name": "CSE HOD Room",
+                            "directions": "Right wing, outer side, front end, near the main corridor"
+                        },
+                        {
+                            "name": "Staff Room (left of Principal's Office)",
+                            "directions": "Front block, left of the Principal's Office"
+                        },
+                        {
+                            "name": "Staff Room (right of Principal's Office)",
+                            "directions": "Front block, right of the Principal's Office"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Conference Hall",
+                            "directions": "Front block, left side, next to the English Communication Lab"
+                        },
+                        {
+                            "name": "Principal's Office",
+                            "directions": "Front block, centre, above the entrance lobby"
+                        },
+                        {
+                            "name": "UPS and AC Compressor Room",
+                            "directions": "Front block, far left end, below the English Communication Lab",
+                            "verify": true
+                        },
+                        {
+                            "name": "Lift",
+                            "directions": "Front block, right of the entrance lobby, near the main corridor",
+                            "verify": true
+                        },
+                        {
+                            "name": "Toilets",
+                            "directions": "Back end of each wing"
+                        }
+                    ]
+                },
+                {
+                    "floor": "2nd floor",
+                    "classes": [
+                        {
+                            "name": "ECE LH-7",
+                            "directions": "Left wing, outer side, front end"
+                        },
+                        {
+                            "name": "ECE LH-8",
+                            "directions": "Left wing, inner side, back end"
+                        },
+                        {
+                            "name": "ECE LH-9",
+                            "directions": "Left wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "CSE LH-8",
+                            "directions": "Right wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "CSE LH-9",
+                            "directions": "Right wing, inner side, back end"
+                        },
+                        {
+                            "name": "CSE LH-10",
+                            "directions": "Right wing, outer side, back end"
+                        },
+                        {
+                            "name": "CSE LH-11",
+                            "directions": "Right wing, outer side, middle"
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "Micro Processor Interfacing Lab",
+                            "directions": "Left wing, outer side, the large lab in the middle",
+                            "keywords": [
+                                "microprocessor",
+                                "8086"
+                            ]
+                        },
+                        {
+                            "name": "Analog and Digital Communication Lab",
+                            "directions": "Left wing, inner side, between ECE LH-8 and ECE LH-9"
+                        },
+                        {
+                            "name": "Electrical Circuits and Measurement Lab",
+                            "directions": "Right wing, inner side, between CSE LH-9 and CSE LH-8"
+                        },
+                        {
+                            "name": "LICA and PDC Lab",
+                            "directions": "Front block, far left end",
+                            "verify": true
+                        },
+                        {
+                            "name": "EDC and ECE Lab",
+                            "directions": "Front block, left of the library"
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "ECE Staff Rooms",
+                            "directions": "Left wing, outer side, back end and near the front"
+                        },
+                        {
+                            "name": "ECE Ladies Staff Room",
+                            "directions": "Left wing, inner side, back end"
+                        },
+                        {
+                            "name": "ECE Faculty Room",
+                            "directions": "Left wing, front end, near the main corridor"
+                        },
+                        {
+                            "name": "CSE Staff Rooms",
+                            "directions": "Right wing, between the classrooms and at the back end"
+                        },
+                        {
+                            "name": "CSE Ladies Staff Room",
+                            "directions": "Right wing, outer side, back end"
+                        },
+                        {
+                            "name": "Staff Room (far right)",
+                            "directions": "Front block, far right end",
+                            "verify": true
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Central Library",
+                            "directions": "Front block, centre, above the entrance"
+                        },
+                        {
+                            "name": "Digital Library",
+                            "directions": "Front block, centre-right, next to the library stacks"
+                        },
+                        {
+                            "name": "AC Library Reading Room",
+                            "directions": "Front block, centre, in front of the Central Library (portico side)"
+                        },
+                        {
+                            "name": "Circulation Counter",
+                            "directions": "Front block, right of the library stacks"
+                        },
+                        {
+                            "name": "Periodicals Section",
+                            "directions": "Front block, right of the Circulation Counter"
+                        },
+                        {
+                            "name": "CSE Dept Library",
+                            "directions": "Right wing, outer side, front end"
+                        },
+                        {
+                            "name": "AC Room",
+                            "directions": "Front block, below the AC Library Reading Room, left corner",
+                            "verify": true
+                        },
+                        {
+                            "name": "Lifts",
+                            "directions": "Front block, left and right of the library, near the main corridor"
+                        },
+                        {
+                            "name": "Toilets",
+                            "directions": "Back end of each wing"
+                        }
+                    ]
+                },
+                {
+                    "floor": "3rd floor",
+                    "classes": [
+                        {
+                            "name": "S&H LH-1",
+                            "directions": "Left wing, outer side, nearest the front"
+                        },
+                        {
+                            "name": "S&H LH-2",
+                            "directions": "Left wing, outer side, middle"
+                        },
+                        {
+                            "name": "S&H LH-3",
+                            "directions": "Left wing, outer side, back end"
+                        },
+                        {
+                            "name": "S&H LH-4",
+                            "directions": "Left wing, inner side, back end"
+                        },
+                        {
+                            "name": "S&H LH-5",
+                            "directions": "Left wing, inner side, second from the back"
+                        },
+                        {
+                            "name": "S&H LH-6",
+                            "directions": "Left wing, inner side, third from the back"
+                        },
+                        {
+                            "name": "S&H LH-7",
+                            "directions": "Left wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "EEE LH-1",
+                            "directions": "Right wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "EEE LH-2",
+                            "directions": "Right wing, inner side, middle"
+                        },
+                        {
+                            "name": "EEE LH-3",
+                            "directions": "Right wing, inner side, back end"
+                        },
+                        {
+                            "name": "EEE LH-4",
+                            "directions": "Right wing, outer side, back end"
+                        },
+                        {
+                            "name": "EEE LH-5",
+                            "directions": "Right wing, outer side, second from the back"
+                        },
+                        {
+                            "name": "EEE LH-6",
+                            "directions": "Right wing, outer side, third from the back"
+                        },
+                        {
+                            "name": "EEE LH-7",
+                            "directions": "Right wing, outer side, nearest the front"
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "Simulation and UML Multimedia Application Development Lab",
+                            "directions": "Front block, centre, above the portico",
+                            "keywords": [
+                                "uml",
+                                "multimedia",
+                                "simulation"
+                            ]
+                        },
+                        {
+                            "name": "Control Systems and Power Electronics Lab",
+                            "directions": "Front block, centre-right, right of the Simulation and UML lab"
+                        },
+                        {
+                            "name": "Physics Lab",
+                            "directions": "Front block, right side, next to the Chemistry Lab"
+                        },
+                        {
+                            "name": "Chemistry Lab",
+                            "directions": "Front block, far right end"
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "S&H Staff Rooms",
+                            "directions": "Left wing, between the classrooms and at the back end"
+                        },
+                        {
+                            "name": "S&H HOD Room",
+                            "directions": "Left wing, front end, near the main corridor"
+                        },
+                        {
+                            "name": "EEE Staff Room",
+                            "directions": "Right wing, back end"
+                        },
+                        {
+                            "name": "EEE HOD Room",
+                            "directions": "Right wing, inner side, between EEE LH-3 and EEE LH-2"
+                        },
+                        {
+                            "name": "S&H Staff Room (front block)",
+                            "directions": "Front block, left of the Simulation and UML lab"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Drawing Hall-1",
+                            "directions": "Front block, far left end"
+                        },
+                        {
+                            "name": "Lifts",
+                            "directions": "Front block, near the main corridor, one on each side"
+                        },
+                        {
+                            "name": "Toilets",
+                            "directions": "Back end of each wing (ladies on the left wing, gents on the right wing)"
+                        }
+                    ]
+                },
+                {
+                    "floor": "4th floor",
+                    "classes": [
+                        {
+                            "name": "S&H LH-8",
+                            "directions": "Left wing, outer side, front end"
+                        },
+                        {
+                            "name": "S&H LH-9",
+                            "directions": "Left wing, outer side, middle"
+                        },
+                        {
+                            "name": "S&H LH-10",
+                            "directions": "Left wing, inner side, back end"
+                        },
+                        {
+                            "name": "S&H LH-11",
+                            "directions": "Left wing, inner side, nearest the front"
+                        },
+                        {
+                            "name": "Tutorial Classrooms (6 rooms)",
+                            "directions": "Right wing, three on the inner side and three on the outer side, from the back end towards the middle",
+                            "keywords": [
+                                "tutorial"
+                            ],
+                            "verify": true
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "EEE Projects and R&D Lab",
+                            "directions": "Front block, left of the Placement Office"
+                        },
+                        {
+                            "name": "ECE Projects and R&D Lab",
+                            "directions": "Front block, right of the Placement Office"
+                        },
+                        {
+                            "name": "VLSI Lab",
+                            "directions": "Front block, far right end",
+                            "keywords": [
+                                "vlsi"
+                            ]
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "English Faculty Room",
+                            "directions": "Left wing, front end, near the main corridor"
+                        },
+                        {
+                            "name": "Electrical Faculty Cabins",
+                            "directions": "Front block, far left end"
+                        },
+                        {
+                            "name": "EEE Faculty Room",
+                            "directions": "Right wing, outer side, front end",
+                            "verify": true
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Seminar Hall-3",
+                            "directions": "Left wing, outer side, back end (large hall)"
+                        },
+                        {
+                            "name": "Drawing Hall-2",
+                            "directions": "Left wing, inner side, between S&H LH-10 and S&H LH-11"
+                        },
+                        {
+                            "name": "EEE Dept Library",
+                            "directions": "Right wing, inner side, front end"
+                        },
+                        {
+                            "name": "ECE Dept Library",
+                            "directions": "Right wing, outer side, front end"
+                        },
+                        {
+                            "name": "Placement Office",
+                            "directions": "Front block, centre, above the balcony"
+                        },
+                        {
+                            "name": "Balcony",
+                            "directions": "Front block, centre, in front of the Placement Office (portico side)"
+                        },
+                        {
+                            "name": "Open Corridor",
+                            "directions": "Front block, far left end and far right end"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

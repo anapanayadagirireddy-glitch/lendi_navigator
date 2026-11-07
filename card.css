@@ -1,0 +1,199 @@
+/* card.css - styles for the block info card (keeps style.css untouched) */
+
+.block-card {
+    --ink: #17212b;
+    --surface: #ffffff;
+    --page: #eef1f4;
+    --border: #cfd6dd;
+    --accent: #0b6e4f;
+    --accent-soft: #e3f2ec;
+
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 55vh;
+    /* leaves the top of the map visible on a phone */
+    overflow-y: auto;
+    padding: 12px 16px 16px;
+    color: var(--ink);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.18);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.block-card[hidden] {
+    display: none;
+}
+
+/* Laptop: a side panel instead of a bottom sheet */
+@media (min-width: 768px) {
+    .block-card {
+        left: auto;
+        right: 16px;
+        bottom: 40px;
+        /* keeps the map credit line visible */
+        width: 400px;
+        max-height: 75vh;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+    }
+}
+
+.bc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.bc-title {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.bc-close {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    color: var(--ink);
+    background: var(--page);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.bc-search {
+    position: relative;
+    margin-top: 10px;
+}
+
+.bc-input {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.bc-input:focus-visible,
+.bc-close:focus-visible,
+.bc-suggestion:focus-visible,
+.bc-rooms li:focus-visible,
+.bc-floor summary:focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 2px;
+}
+
+.bc-suggestions {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bc-suggestion {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    text-align: left;
+    color: var(--ink);
+    background: var(--page);
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+
+.bc-suggestion:hover {
+    background: var(--accent-soft);
+}
+
+.bc-s-floor {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.bc-more {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.bc-answer {
+    margin-top: 10px;
+    padding: 10px 12px;
+    line-height: 1.4;
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+}
+
+.bc-note {
+    margin: 10px 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #4b5563;
+}
+
+.bc-note summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.bc-note summary:focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 2px;
+}
+
+.bc-note p {
+    margin: 6px 0 0;
+}
+
+.bc-floor {
+    margin-bottom: 6px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.bc-floor summary {
+    padding: 10px 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.bc-group {
+    margin: 8px 12px 4px;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.bc-rooms {
+    margin: 0 0 8px;
+    padding: 0 12px;
+    list-style: none;
+}
+
+.bc-rooms li {
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.bc-rooms li:hover {
+    background: var(--page);
+}
+
+.bc-rooms li.bc-highlight {
+    font-weight: 600;
+    background: var(--accent-soft);
+}

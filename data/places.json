@@ -1,5 +1,5 @@
 [
-  { "name": "Sai Block", "lat": 18.020178, "lng": 83.400869 },
+  { "name": "Sai Block", "lat": 18.020178, "lng": 83.400869, "blockId": "sai-block" },
   { "name": "Mechanical block", "lat": 18.019865, "lng": 83.401377 },
   { "name": "Canteen", "lat": 18.019688, "lng": 83.401008 },
   { "name": "Boys hostel", "lat": 18.01851, "lng": 83.401899 },
