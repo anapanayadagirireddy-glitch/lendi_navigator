@@ -197,3 +197,53 @@
     font-weight: 600;
     background: var(--accent-soft);
 }
+
+/* ---------- Make the answer message impossible to miss ---------- */
+
+.bc-search {
+    margin-bottom: 10px;
+}
+
+/* The message stays at the top of the card while you scroll the list */
+.bc-answer {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin-top: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* A short flash so the eye goes to the message */
+.bc-flash {
+    animation: bc-flash 1.2s ease-out;
+}
+
+@keyframes bc-flash {
+    0% {
+        background: #ffe9a8;
+    }
+
+    100% {
+        background: var(--accent-soft);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bc-flash {
+        animation: none;
+    }
+}
+
+/* The directions text shown under the chosen room */
+.bc-inline {
+    margin-top: 2px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #4b5563;
+}
+
+/* When the list scrolls to a room, keep it clear of the sticky message */
+.bc-rooms li {
+    scroll-margin-top: 110px;
+    scroll-margin-bottom: 12px;
+}

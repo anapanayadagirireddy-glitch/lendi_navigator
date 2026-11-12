@@ -1,0 +1,467 @@
+{
+    "blocks": [
+        {
+            "id": "mechanical-block",
+            "name": "Mechanical Block",
+            "aliases": [
+                "Mechanical Engineering Block",
+                "Mechanical Dept Block",
+                "Mechanical Block"
+            ],
+            "entranceNote": "Directions start from the stairs and lift area in the middle of each floor. When you step out of the lift or stairs you face the long row of rooms (the main row). The left wing is on your left and the right wing is on your right. First room means closest to the main row, far end means the end of the wing.",
+            "floors": [
+                {
+                    "floor": "Ground floor",
+                    "classes": [],
+                    "labs": [
+                        {
+                            "name": "Heat Transfer Lab",
+                            "directions": "Main row, far left end"
+                        },
+                        {
+                            "name": "Thermal Engineering Lab",
+                            "directions": "Main row, straight ahead, left half"
+                        },
+                        {
+                            "name": "Machine Tools Lab",
+                            "directions": "Main row, straight ahead, right half"
+                        },
+                        {
+                            "name": "Welding Lab",
+                            "directions": "Main row, far right end, at the corner of the right wing"
+                        },
+                        {
+                            "name": "Mechanical Workshop",
+                            "directions": "Left wing, far end",
+                            "keywords": [
+                                "workshop"
+                            ]
+                        },
+                        {
+                            "name": "Lab next to the Mechanical Workshop",
+                            "directions": "Left wing, first room next to the main row",
+                            "verify": true
+                        },
+                        {
+                            "name": "Production Technology Lab",
+                            "directions": "Right wing, first room next to the Welding Lab"
+                        },
+                        {
+                            "name": "Theory of Machines Lab",
+                            "directions": "Right wing, second room from the main row",
+                            "keywords": [
+                                "tom"
+                            ]
+                        },
+                        {
+                            "name": "Metallurgy Lab",
+                            "directions": "Right wing, third room from the main row"
+                        },
+                        {
+                            "name": "Mechanics of Solids Lab",
+                            "directions": "Right wing, far end",
+                            "keywords": [
+                                "mos"
+                            ]
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "Staff Room (left, next to the stairs)",
+                            "directions": "Stairs and lift area, left side, next to the stairs"
+                        },
+                        {
+                            "name": "Staff Room (right, next to the lift)",
+                            "directions": "Stairs and lift area, right side, next to the lift"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Stairs",
+                            "directions": "Middle of the floor, in the stairs and lift area, left of the lift",
+                            "keywords": [
+                                "steps"
+                            ]
+                        },
+                        {
+                            "name": "Lift",
+                            "directions": "Middle of the floor, in the stairs and lift area, right of the stairs"
+                        }
+                    ]
+                },
+                {
+                    "floor": "1st floor (Mechanical Dept)",
+                    "classes": [
+                        {
+                            "name": "S&H LH-1",
+                            "directions": "Right wing, first room next to the main row"
+                        },
+                        {
+                            "name": "S&H LH-2",
+                            "directions": "Right wing, second room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-3",
+                            "directions": "Right wing, third room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-4",
+                            "directions": "Right wing, far end"
+                        },
+                        {
+                            "name": "S&H LH-5",
+                            "directions": "Left wing, far end"
+                        },
+                        {
+                            "name": "S&H LH-6",
+                            "directions": "Left wing, third room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-7",
+                            "directions": "Left wing, second room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-8",
+                            "directions": "Left wing, first room next to the main row"
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "Simulation and Instrumentation Lab",
+                            "directions": "Main row, towards the right end",
+                            "keywords": [
+                                "simulation",
+                                "instrumentation"
+                            ],
+                            "verify": true
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "Staff Room (main row, left)",
+                            "directions": "Main row, second room from the left end, after the Rest Room",
+                            "verify": true
+                        },
+                        {
+                            "name": "Staff Room (main row, right end)",
+                            "directions": "Main row, far right end, next to the right wing",
+                            "verify": true
+                        },
+                        {
+                            "name": "Staff Room (left, next to the stairs)",
+                            "directions": "Stairs and lift area, left side, next to the stairs"
+                        },
+                        {
+                            "name": "Staff Room (right, next to the lift)",
+                            "directions": "Stairs and lift area, right side, next to the lift"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Rest Room",
+                            "directions": "Main row, far left end",
+                            "verify": true
+                        },
+                        {
+                            "name": "Department Library",
+                            "directions": "Main row, left of centre, after the Staff Room",
+                            "keywords": [
+                                "library"
+                            ],
+                            "verify": true
+                        },
+                        {
+                            "name": "Stairs",
+                            "directions": "Middle of the floor, in the stairs and lift area, left of the lift",
+                            "keywords": [
+                                "steps"
+                            ]
+                        },
+                        {
+                            "name": "Lift",
+                            "directions": "Middle of the floor, in the stairs and lift area, right of the stairs"
+                        }
+                    ]
+                },
+                {
+                    "floor": "2nd floor (CSSE Dept)",
+                    "classes": [
+                        {
+                            "name": "S&H LH-2",
+                            "directions": "Main row, 3rd room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-3",
+                            "directions": "Main row, 4th room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-4",
+                            "directions": "Main row, 5th room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-5",
+                            "directions": "Main row, far right end"
+                        },
+                        {
+                            "name": "S&H LH-17",
+                            "directions": "Right wing, first room next to the main row",
+                            "verify": true
+                        },
+                        {
+                            "name": "CSM 1st Year Classroom",
+                            "directions": "Right wing, second room from the main row",
+                            "keywords": [
+                                "csm",
+                                "first year"
+                            ]
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "Aryabatta Lab (purple lab)",
+                            "directions": "Left wing, first room next to the main row",
+                            "keywords": [
+                                "purple",
+                                "aryabhata",
+                                "aryabhatta",
+                                "csse"
+                            ]
+                        },
+                        {
+                            "name": "Shakuntala Lab (orange lab)",
+                            "directions": "Left wing, far end",
+                            "keywords": [
+                                "orange",
+                                "shakuntala devi",
+                                "csse"
+                            ]
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "Staff Room (main row)",
+                            "directions": "Main row, 2nd room from the left end, after the Girls Rest Room",
+                            "verify": true
+                        },
+                        {
+                            "name": "Staff Room (left, next to the stairs)",
+                            "directions": "Stairs and lift area, left side, next to the stairs"
+                        },
+                        {
+                            "name": "Staff Room (right, next to the lift)",
+                            "directions": "Stairs and lift area, right side, next to the lift"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Girls Rest Room",
+                            "directions": "Main row, far left end",
+                            "keywords": [
+                                "toilet",
+                                "washroom"
+                            ]
+                        },
+                        {
+                            "name": "Seminar Hall",
+                            "directions": "Right wing, far end",
+                            "keywords": [
+                                "seminar"
+                            ]
+                        },
+                        {
+                            "name": "Stairs",
+                            "directions": "Middle of the floor, in the stairs and lift area, left of the lift",
+                            "keywords": [
+                                "steps"
+                            ]
+                        },
+                        {
+                            "name": "Lift",
+                            "directions": "Middle of the floor, in the stairs and lift area, right of the stairs"
+                        }
+                    ]
+                },
+                {
+                    "floor": "3rd floor",
+                    "classes": [
+                        {
+                            "name": "Classroom (name not written)",
+                            "directions": "Main row, far left end",
+                            "verify": true
+                        },
+                        {
+                            "name": "S&H LH-1",
+                            "directions": "Right wing, far end"
+                        },
+                        {
+                            "name": "S&H LH-2",
+                            "directions": "Right wing, third room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-3",
+                            "directions": "Right wing, second room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-4",
+                            "directions": "Right wing, first room next to the main row"
+                        },
+                        {
+                            "name": "S&H LH-5",
+                            "directions": "Main row, far right end"
+                        },
+                        {
+                            "name": "S&H LH-6",
+                            "directions": "Main row, 5th room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-7",
+                            "directions": "Main row, 4th room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-8",
+                            "directions": "Left wing, first room next to the main row"
+                        },
+                        {
+                            "name": "S&H LH-9",
+                            "directions": "Left wing, second room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-10",
+                            "directions": "Left wing, third room from the main row"
+                        },
+                        {
+                            "name": "S&H LH-11",
+                            "directions": "Left wing, far end"
+                        }
+                    ],
+                    "labs": [],
+                    "staffRooms": [
+                        {
+                            "name": "Staff Room (main row)",
+                            "directions": "Main row, 2nd room from the left end, after the first classroom"
+                        },
+                        {
+                            "name": "Staff Room (left, next to the stairs)",
+                            "directions": "Stairs and lift area, left side, next to the stairs"
+                        },
+                        {
+                            "name": "Staff Room (right, next to the lift)",
+                            "directions": "Stairs and lift area, right side, next to the lift"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Library",
+                            "directions": "Main row, 3rd room from the left end, after the Staff Room",
+                            "keywords": [
+                                "library"
+                            ]
+                        },
+                        {
+                            "name": "Stairs",
+                            "directions": "Middle of the floor, in the stairs and lift area, left of the lift",
+                            "keywords": [
+                                "steps"
+                            ]
+                        },
+                        {
+                            "name": "Lift",
+                            "directions": "Middle of the floor, in the stairs and lift area, right of the stairs"
+                        }
+                    ]
+                },
+                {
+                    "floor": "4th floor",
+                    "classes": [
+                        {
+                            "name": "S&H LH-15",
+                            "directions": "Main row, far left end"
+                        },
+                        {
+                            "name": "S&H LH-14",
+                            "directions": "Main row, 2nd room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-13",
+                            "directions": "Main row, 3rd room from the left end"
+                        },
+                        {
+                            "name": "S&H LH-12",
+                            "directions": "Main row, 4th room from the left end"
+                        }
+                    ],
+                    "labs": [
+                        {
+                            "name": "Sir C.V. Raman Physics Lab",
+                            "directions": "Main row, far right end, at the corner of the right wing",
+                            "keywords": [
+                                "physics",
+                                "raman",
+                                "cv raman"
+                            ]
+                        },
+                        {
+                            "name": "Dennis M. Ritchie Programming Lab",
+                            "directions": "Right wing, first room next to the main row",
+                            "keywords": [
+                                "programming",
+                                "c programming",
+                                "dennis",
+                                "ritchie"
+                            ]
+                        },
+                        {
+                            "name": "English Lab",
+                            "directions": "Right wing, far end",
+                            "keywords": [
+                                "english",
+                                "language"
+                            ]
+                        }
+                    ],
+                    "staffRooms": [
+                        {
+                            "name": "Staff Rooms (left wing, first two rooms)",
+                            "directions": "Left wing, the two rooms next to the main row",
+                            "verify": true
+                        },
+                        {
+                            "name": "Staff Room (left, next to the stairs)",
+                            "directions": "Stairs and lift area, left side, next to the stairs"
+                        },
+                        {
+                            "name": "Staff Room (right, next to the lift)",
+                            "directions": "Stairs and lift area, right side, next to the lift"
+                        }
+                    ],
+                    "others": [
+                        {
+                            "name": "Drawing Hall",
+                            "directions": "Left wing, far end",
+                            "keywords": [
+                                "drawing",
+                                "engineering drawing"
+                            ]
+                        },
+                        {
+                            "name": "Empty rooms (2)",
+                            "directions": "Left wing, between the staff rooms and the Drawing Hall",
+                            "verify": true
+                        },
+                        {
+                            "name": "Stairs",
+                            "directions": "Middle of the floor, in the stairs and lift area, left of the lift",
+                            "keywords": [
+                                "steps"
+                            ]
+                        },
+                        {
+                            "name": "Lift",
+                            "directions": "Middle of the floor, in the stairs and lift area, right of the stairs"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

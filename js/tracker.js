@@ -1,6 +1,12 @@
 // tracker.js
 // Live location tracking with an ARROW that shows where you are and which way you face.
 //
+// GPS is only accurate to about 5 to 15 meters (worse between buildings), so a raw reading
+// jumps around inside its "accuracy circle". Before drawing the arrow we clean each reading:
+//   1. Ignore very poor readings.
+//   2. Smooth: move only part of the way towards each new reading.
+//   3. Snap: if we are close to a campus path, put the arrow ON the path.
+//
 // Where the direction comes from (best first):
 //   1. The phone's compass (works even when you stand still). iPhones ask permission once.
 //   2. GPS movement direction (only known while you are walking).
@@ -15,6 +21,10 @@
 
 import { getMap } from "./map.js";
 
+// Readings worse than this (accuracy in meters) are ignored, unless we ignored several in a row
+const MAX_USABLE_ACCURACY_M = 40;
+const MAX_SKIPPED_IN_A_ROW = 4;
+
 let watchId = null;
 let arrowMarker = null;
 let accuracyCircle = null;
@@ -24,6 +34,10 @@ let compassHeading = null; // degrees, 0 = north, from the compass (or null)
 let gpsHeading = null; // degrees, from walking direction (last known value, or null)
 let displayAngle = null; // the angle we actually draw (smoothed)
 let compassStarted = false;
+
+let smoothed = null; // the smoothed position { lat, lng }
+let lastEdgeKey = null; // the path piece we were snapped to last time
+let skipped = 0; // poor readings ignored in a row
 
 // The arrow icon. It points UP (north) before we rotate it.
 // The dot is shown when we do not know the direction yet.
@@ -35,6 +49,20 @@ const ICON_HTML = `
       <path d="M22 3 L36 38 L22 30 L8 38 Z" fill="#1d4ed8" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
     </svg>
   </div>`;
+
+// ---------- Cleaning the readings ----------
+
+// Moves from the previous smoothed position towards the new reading.
+// A good reading (small accuracy number) is trusted more than a poor one.
+export function smoothStep(previous, reading) {
+    if (!previous) return { lat: reading.lat, lng: reading.lng };
+    const accuracy = reading.accuracy > 0 ? reading.accuracy : 15;
+    const trust = Math.min(0.6, Math.max(0.15, 12 / accuracy)); // between 0.15 and 0.6
+    return {
+        lat: previous.lat + (reading.lat - previous.lat) * trust,
+        lng: previous.lng + (reading.lng - previous.lng) * trust,
+    };
+}
 
 // ---------- Direction ----------
 
@@ -138,10 +166,55 @@ function placeArrow(lat, lng, accuracy) {
 
 // ---------- Tracking ----------
 
+// Cleans one GPS reading, draws the arrow, and returns where the arrow was drawn
+// (or null if the reading was ignored).
+function handleReading(reading, snap, onPosition) {
+    // 1) Ignore a very poor reading (but not forever: indoors they may all be poor)
+    if (smoothed && reading.accuracy > MAX_USABLE_ACCURACY_M && skipped < MAX_SKIPPED_IN_A_ROW) {
+        skipped++;
+        return null;
+    }
+    skipped = 0;
+
+    // 2) Smooth
+    smoothed = smoothStep(smoothed, reading);
+
+    // 3) Snap to the nearest path, if there is one close enough
+    let shown = { lat: smoothed.lat, lng: smoothed.lng };
+    let snapped = false;
+    if (snap) {
+        const onPath = snap(smoothed.lat, smoothed.lng, lastEdgeKey);
+        if (onPath) {
+            shown = { lat: onPath.lat, lng: onPath.lng };
+            lastEdgeKey = onPath.key;
+            snapped = true;
+        } else {
+            lastEdgeKey = null;
+        }
+    }
+
+    placeArrow(shown.lat, shown.lng, reading.accuracy);
+    if (follow) getMap().panTo([shown.lat, shown.lng]);
+
+    if (onPosition) {
+        onPosition({
+            lat: shown.lat,
+            lng: shown.lng,
+            rawLat: reading.lat,
+            rawLng: reading.lng,
+            accuracy: reading.accuracy,
+            heading: currentHeading(),
+            snapped,
+        });
+    }
+    return shown;
+}
+
 // initial   : the first position you already have, { lat, lng, accuracy }
-// onPosition: called on every new position with { lat, lng, accuracy, heading }
+// snap      : optional function (lat, lng, lastKey) that returns a point ON a path, or null
+// onPosition: called on every new position with { lat, lng, accuracy, heading, snapped, ... }
 // onError   : called when GPS fails
-export function startTracking({ initial, onPosition, onError } = {}) {
+export function startTracking({ initial, snap, onPosition, onError } = {}) {
     if (watchId !== null) return;
     if (!navigator.geolocation) {
         if (onError) onError(new Error("Geolocation is not supported"));
@@ -150,6 +223,9 @@ export function startTracking({ initial, onPosition, onError } = {}) {
 
     const map = getMap();
     follow = true;
+    smoothed = null;
+    lastEdgeKey = null;
+    skipped = 0;
 
     // If the user drags the map themselves, stop forcing it back to them
     map.on("dragstart", () => {
@@ -157,8 +233,12 @@ export function startTracking({ initial, onPosition, onError } = {}) {
     });
 
     if (initial) {
-        placeArrow(initial.lat, initial.lng, initial.accuracy);
-        map.setView([initial.lat, initial.lng], Math.max(map.getZoom(), 18));
+        const shown = handleReading(
+            { lat: initial.lat, lng: initial.lng, accuracy: initial.accuracy },
+            snap,
+            onPosition
+        );
+        if (shown) map.setView([shown.lat, shown.lng], Math.max(map.getZoom(), 18));
     }
 
     watchId = navigator.geolocation.watchPosition(
@@ -170,12 +250,7 @@ export function startTracking({ initial, onPosition, onError } = {}) {
                 gpsHeading = heading;
             }
 
-            placeArrow(latitude, longitude, accuracy);
-            if (follow) map.panTo([latitude, longitude]);
-
-            if (onPosition) {
-                onPosition({ lat: latitude, lng: longitude, accuracy, heading: currentHeading() });
-            }
+            handleReading({ lat: latitude, lng: longitude, accuracy }, snap, onPosition);
         },
         (error) => {
             if (onError) onError(error);
@@ -202,4 +277,6 @@ export function stopTracking() {
     arrowMarker = null;
     accuracyCircle = null;
     displayAngle = null;
+    smoothed = null;
+    lastEdgeKey = null;
 }

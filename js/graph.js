@@ -78,6 +78,66 @@ export class Graph {
     return { node: bestNode, distance: bestDistance };
   }
 
+  // Finds the closest point ON a path (not just the nearest corner) to a GPS point.
+  // GPS often lands a few meters beside the path. This puts the point back on it.
+  //
+  // lastKey (optional): the path piece we were on a moment ago. We stay on it unless another
+  // piece is clearly closer (by "stickiness" meters), so the arrow does not jump between
+  // two paths that run side by side (like the garden paths).
+  //
+  // Returns { lat, lng, distance, key, t } or null if the graph has no paths.
+  snapToPath(lat, lng, lastKey = null, stickiness = 6) {
+    const M_PER_DEG_LAT = 110540;
+    const M_PER_DEG_LNG = 111320 * Math.cos((lat * Math.PI) / 180);
+
+    let best = null; // closest piece overall
+    let onLast = null; // closest point on the piece we were on before
+
+    for (const [fromId, neighbors] of this.adjacency) {
+      const a = this.nodes.get(fromId);
+      for (const { to: toId } of neighbors) {
+        if (fromId > toId) continue; // each piece is stored twice, look at it only once
+        const b = this.nodes.get(toId);
+
+        // Work in meters, with the GPS point at (0, 0)
+        const ax = (a.lng - lng) * M_PER_DEG_LNG;
+        const ay = (a.lat - lat) * M_PER_DEG_LAT;
+        const bx = (b.lng - lng) * M_PER_DEG_LNG;
+        const by = (b.lat - lat) * M_PER_DEG_LAT;
+
+        const dx = bx - ax;
+        const dy = by - ay;
+        const lengthSquared = dx * dx + dy * dy;
+
+        // How far along the piece is the closest point? (0 = at a, 1 = at b)
+        let t = lengthSquared === 0 ? 0 : -(ax * dx + ay * dy) / lengthSquared;
+        t = Math.max(0, Math.min(1, t));
+
+        const px = ax + t * dx;
+        const py = ay + t * dy;
+        const distance = Math.hypot(px, py);
+        const key = `${fromId}-${toId}`;
+
+        const candidate = {
+          lat: lat + py / M_PER_DEG_LAT,
+          lng: lng + px / M_PER_DEG_LNG,
+          distance,
+          key,
+          t,
+        };
+        if (!best || distance < best.distance) best = candidate;
+        if (key === lastKey) onLast = candidate;
+      }
+    }
+
+    // Stay on the last piece only while we are in the MIDDLE of it. At its ends (t = 0 or 1)
+    // we are at a corner, and the next piece should take over straight away.
+    if (onLast && best && onLast.t > 0 && onLast.t < 1 && onLast.distance <= best.distance + stickiness) {
+      return onLast;
+    }
+    return best;
+  }
+
   // Turns a list of node ids into [[lat, lng], ...] so the map can draw the route
   pathToLatLngs(path) {
     return path.map((id) => {

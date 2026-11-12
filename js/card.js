@@ -97,10 +97,22 @@ export function searchRooms(rooms, trie, query) {
 
 // ---------- Loading data ----------
 
-export async function loadBlocks(url = "data/blocks.json") {
-    const response = await fetch(url);
-    const data = await response.json();
-    blocks = data.blocks;
+// One file per building. To add another building later, create its file in the data folder
+// and add its path to this list.
+const BLOCK_FILES = ["data/blocks.json", "data/blocks-mechanical.json"];
+
+export async function loadBlocks(urls = BLOCK_FILES) {
+    blocks = [];
+    for (const url of urls) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) continue; // a missing file just means no card for that building
+            const data = await response.json();
+            blocks.push(...data.blocks);
+        } catch (error) {
+            console.warn(`Could not load ${url}:`, error);
+        }
+    }
 }
 
 // ---------- Drawing the card ----------
@@ -188,6 +200,12 @@ export function openBlockCard(blockId) {
         floorsWrap.append(details);
     });
 
+    // Remove the highlight and the small directions text from every room
+    function clearHighlight() {
+        for (const li of roomEls.values()) li.classList.remove("bc-highlight");
+        for (const old of cardEl.querySelectorAll(".bc-inline")) old.remove();
+    }
+
     // Show the answer message for one room, open its floor and highlight it
     function showRoom(room) {
         suggestions.replaceChildren();
@@ -197,10 +215,16 @@ export function openBlockCard(blockId) {
             el("span", "", ` \u2013 ${room.floorName}. ${room.directions}.`)
         );
 
+        // Flash the message so the eye goes to it (it also stays at the top while you scroll)
+        answer.classList.remove("bc-flash");
+        void answer.offsetWidth; // restarts the animation
+        answer.classList.add("bc-flash");
+
         floorEls[room.floorIndex].open = true;
-        for (const li of roomEls.values()) li.classList.remove("bc-highlight");
+        clearHighlight();
         const li = roomEls.get(room.id);
         li.classList.add("bc-highlight");
+        li.append(el("div", "bc-inline", room.directions)); // directions right under the room
         li.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
 
@@ -218,7 +242,7 @@ export function openBlockCard(blockId) {
         const query = input.value.trim();
         suggestions.replaceChildren();
         answer.hidden = true;
-        for (const li of roomEls.values()) li.classList.remove("bc-highlight");
+        clearHighlight();
         if (!query) return;
 
         const results = searchRooms(rooms, trie, query);

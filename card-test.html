@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Card test</title>
+    <link rel="stylesheet" href="card.css" />
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 16px;
+        }
+
+        button {
+            padding: 10px 16px;
+            font: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Block card test page</h1>
+    <p>Your real app is not changed. This page only tests the card.</p>
+    <button id="open-btn" type="button">Open Sai Block card</button>
+
+    <script type="module">
+        import { loadBlocks, openBlockCard } from "./js/card.js";
+
+        await loadBlocks();
+        document.getElementById("open-btn").addEventListener("click", () => openBlockCard("sai-block"));
+        openBlockCard("sai-block"); // also open it right away
+    </script>
+</body>
+
+</html>

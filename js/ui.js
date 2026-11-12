@@ -2,6 +2,7 @@ import {
   initMap,
   drawNetwork,
   drawRoute,
+  updateRoute,
   clearRoute,
   getMap,
   enableClickCoords,
@@ -13,6 +14,7 @@ import { astar } from "./astar.js";
 import { getCurrentPosition, gpsErrorMessage } from "./gps.js";
 import { loadBlocks, openBlockCard, closeCard } from "./card.js";
 import { enableCompass, startTracking, recenter, isTracking } from "./tracker.js";
+import { makeRoute, updateProgress, rerouteFrom } from "./progress.js";
 
 // true  = "collect mode": click a place on the map and it shows its coordinates
 //         (we use this to fill places.json)
@@ -23,6 +25,10 @@ const WALKING_SPEED_M_PER_MIN = 83; // about 5 km/h
 
 // If the user is farther than this from every campus path, we say they are off campus.
 const MAX_DISTANCE_FROM_CAMPUS_M = 300;
+
+// GPS often lands a few meters beside the path. If the user is within this distance of a path,
+// the arrow is placed ON the path.
+const SNAP_MAX_DISTANCE_M = 25;
 
 // Loads data/places.json. If the file is missing or empty we return [] instead of crashing.
 async function loadPlaces() {
@@ -64,6 +70,13 @@ async function start() {
   algoInfo.style.cssText = "margin: 4px 0 0; font-size: 0.85rem; color: #4b5563;";
   info.after(algoInfo);
 
+  // The "You have arrived" banner (hidden until you arrive)
+  const arrivedBanner = document.createElement("div");
+  arrivedBanner.hidden = true;
+  arrivedBanner.style.cssText =
+    "margin: 8px 0 0; padding: 10px 12px; font-weight: 600; color: #ffffff; background: #0b6e4f; border-radius: 6px;";
+  info.after(arrivedBanner);
+
   // "Share route" button (hidden until a route exists)
   const shareBtn = document.createElement("button");
   shareBtn.type = "button";
@@ -73,6 +86,11 @@ async function start() {
 
   // The start and destination of the route on screen (used to build the link)
   let sharedRoute = null;
+
+  // The route the user is walking now: { route, to }. While they walk along it, the green
+  // line gets shorter (see followRoute below). It is null when there is no route.
+  let activeRoute = null;
+  let arrived = false; // true after the "You have arrived" message, until the next route
 
   const places = await loadPlaces();
   if (places.length === 0) {
@@ -119,6 +137,86 @@ async function start() {
   let myNodeId = null;
   let myPosition = null; // the user's latest GPS position
 
+  // ---------- Follow the route while walking ----------
+  // Called on every new GPS position. Trims the green line to what is LEFT to walk,
+  // says when you arrive, and builds a new route if you leave the old one.
+  function followRoute(pos) {
+    if (!activeRoute) return;
+    const { route, to } = activeRoute;
+    const progress = updateProgress(route, pos.lat, pos.lng, pos.accuracy);
+
+    if (progress.status === "following") {
+      updateRoute(progress.latlngs, progress.walked); // green = still to walk, grey = already walked
+      const meters = Math.round(progress.meters);
+      const minutes = Math.max(1, Math.round(progress.meters / WALKING_SPEED_M_PER_MIN));
+      info.textContent = `${to.name}: ${meters} m left, about ${minutes} min`;
+      return;
+    }
+
+    if (progress.status === "arrived") {
+      clearRoute();
+      activeRoute = null;
+      arrived = true;
+      algoInfo.textContent = "";
+      info.textContent = "";
+      arrivedBanner.textContent = `You have arrived at ${to.name}`;
+      arrivedBanner.hidden = false;
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]); // a short buzz (Android phones)
+      return;
+    }
+
+    if (progress.status === "off-route" && myNodeId !== null) {
+      const fresh = rerouteFrom(graph, pos.lat, pos.lng, to.nodeId);
+      if (!fresh) {
+        info.textContent = `You are off the route and I cannot find a way to ${to.name} from here.`;
+        return;
+      }
+      drawRoute(fresh.latlngs, false); // false = do not move the map
+      activeRoute.route = makeRoute(fresh.latlngs);
+      const meters = Math.round(fresh.meters);
+      const minutes = Math.max(1, Math.round(fresh.meters / WALKING_SPEED_M_PER_MIN));
+      info.textContent = `New route to ${to.name}: ${meters} m, about ${minutes} min`;
+    }
+    // "waiting" and "holding": do nothing, the line stays as it is
+  }
+
+  // ---------- GPS log (only when the page is opened with ?debug=1) ----------
+  // Open the page like  https://your-site/?debug=1 , walk around, then press
+  // "Download GPS log". The file shows how good (or noisy) your phone's GPS really is.
+  const gpsLog = [];
+  let logButton = null;
+  if (new URLSearchParams(window.location.search).has("debug")) {
+    logButton = document.createElement("button");
+    logButton.type = "button";
+    logButton.textContent = "Download GPS log (0)";
+    document.querySelector(".controls").append(logButton);
+
+    logButton.addEventListener("click", () => {
+      const header = "time,raw_lat,raw_lng,accuracy_m,shown_lat,shown_lng,snapped,raw_to_nearest_path_m";
+      const csv = [header, ...gpsLog.map((row) => row.join(","))].join("\n");
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+      link.download = "gps-log.csv";
+      link.click();
+    });
+  }
+
+  function recordFix(pos) {
+    if (!logButton) return;
+    const nearest = graph.snapToPath(pos.rawLat, pos.rawLng);
+    gpsLog.push([
+      new Date().toISOString(),
+      pos.rawLat.toFixed(7),
+      pos.rawLng.toFixed(7),
+      Math.round(pos.accuracy),
+      pos.lat.toFixed(7),
+      pos.lng.toFixed(7),
+      pos.snapped ? 1 : 0,
+      nearest ? nearest.distance.toFixed(1) : "",
+    ]);
+    logButton.textContent = `Download GPS log (${gpsLog.length})`;
+  }
+
   gpsBtn.addEventListener("click", async () => {
     // Already tracking? Then this button just brings the map back to you.
     if (isTracking()) {
@@ -153,15 +251,25 @@ async function start() {
       // Show the arrow and keep following the user. Every new position updates myNodeId.
       startTracking({
         initial: position,
+        snap: (lat, lng, lastKey) => {
+          const snapped = graph.snapToPath(lat, lng, lastKey);
+          return snapped && snapped.distance <= SNAP_MAX_DISTANCE_M ? snapped : null;
+        },
         onPosition: (pos) => {
           myPosition = pos;
           const nearest = graph.findNearestNode(pos.lat, pos.lng);
           myNodeId =
             nearest.distance <= MAX_DISTANCE_FROM_CAMPUS_M ? nearest.node.id : null;
+          recordFix(pos);
+          followRoute(pos); // shrink the green line to what is left
         },
         onError: (error) => {
-          info.textContent = gpsErrorMessage(error);
           console.warn("GPS error:", error);
+          // While a route is on the screen (or you have just arrived), a short GPS hiccup
+          // should not wipe the distance text. A blocked permission is always shown.
+          if (error.code === 1 || (!activeRoute && !arrived)) {
+            info.textContent = gpsErrorMessage(error);
+          }
         },
       });
 
@@ -242,9 +350,12 @@ async function start() {
 
   // ---------- "Find route" ----------
   routeBtn.addEventListener("click", () => {
+    arrivedBanner.hidden = true;
     algoInfo.textContent = "";
     shareBtn.hidden = true;
     sharedRoute = null;
+    activeRoute = null;
+    arrived = false;
     if (startSelect.value === "" || endSelect.value === "") {
       info.textContent = "Please choose both a start and a destination.";
       return;
@@ -278,6 +389,9 @@ async function start() {
     }
 
     drawRoute(graph.pathToLatLngs(result.path));
+
+    // Remember this route, so the green line can shrink while the user walks along it
+    activeRoute = { route: makeRoute(graph.pathToLatLngs(result.path)), to };
 
     // Remember this route so the Share button can build a link.
     // "My location" is only true for you, so it is left out of the link.

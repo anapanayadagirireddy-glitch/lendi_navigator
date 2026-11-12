@@ -12,7 +12,8 @@ const DEFAULT_ZOOM = 17;
 // These variables remember things between function calls
 let map = null; // the Leaflet map itself
 let markersLayer = null; // a group that holds all place markers
-let routeLine = null; // the line of the current route
+let routeLine = null; // the green line: the part of the route still to walk
+let walkedLine = null; // the grey line: the part of the route already walked
 let userMarker = null; // the dot showing the user's GPS position
 
 // ---------- Setup ----------
@@ -49,8 +50,10 @@ export function clearPlaceMarkers() {
 // ---------- Route line ----------
 
 // latlngs is a list of points: [[lat, lng], [lat, lng], ...]
-export function drawRoute(latlngs) {
-  clearRoute(); // remove the old route first
+// fit = true  : zoom the map so the whole route is visible (normal)
+// fit = false : leave the map where it is (used when we draw a new route while you walk)
+export function drawRoute(latlngs, fit = true) {
+  clearRoute(); // remove the old route first (green and grey)
 
   routeLine = L.polyline(latlngs, {
     color: "#0b6e4f",
@@ -58,14 +61,41 @@ export function drawRoute(latlngs) {
     opacity: 0.9,
   }).addTo(map);
 
-  // Zoom the map so the whole route is visible
-  map.fitBounds(routeLine.getBounds(), { padding: [40, 40] });
+  if (fit) {
+    map.fitBounds(routeLine.getBounds(), { padding: [40, 40] });
+  }
+}
+
+// Updates the route while you walk, without redrawing it and without moving the map.
+//   remaining : the points still to walk (drawn green)
+//   walked    : the points already walked (drawn grey)
+export function updateRoute(remaining, walked = []) {
+  if (routeLine) {
+    routeLine.setLatLngs(remaining);
+  }
+
+  if (walked.length >= 2) {
+    if (!walkedLine) {
+      walkedLine = L.polyline(walked, {
+        color: "#9ca3af",
+        weight: 6,
+        opacity: 0.9,
+      }).addTo(map);
+      if (routeLine) routeLine.bringToFront(); // the green line stays on top of the grey one
+    } else {
+      walkedLine.setLatLngs(walked);
+    }
+  }
 }
 
 export function clearRoute() {
   if (routeLine) {
     map.removeLayer(routeLine);
     routeLine = null;
+  }
+  if (walkedLine) {
+    map.removeLayer(walkedLine);
+    walkedLine = null;
   }
 }
 
