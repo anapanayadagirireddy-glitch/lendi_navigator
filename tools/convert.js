@@ -75,6 +75,93 @@ for (const way of raw.elements) {
 }
 console.log(`Read from raw file: ${nodes.size} nodes, ${edges.length} edges`);
 
+// ---------- Step 2b: join dead ends to a path that passes right next to them ----------
+// In OpenStreetMap a path sometimes stops 1 to 3 meters SHORT of the path it should join.
+// On the map it looks connected, but in our graph it is NOT, so a route that starts at the
+// end of that path has to go the long way round. Here we join such dead ends to the path
+// that passes next to them.
+const JOIN_DISTANCE_M = 4; // only join when the other path is this close (meters)
+let nextNewId = 900000000000; // ids for the new meeting points (real OSM ids are smaller)
+
+// Closest point on the straight piece a-b to the point p (all are { lat, lng })
+function projectOnSegment(p, a, b) {
+  const M_PER_DEG_LAT = 110540;
+  const M_PER_DEG_LNG = 111320 * Math.cos((p.lat * Math.PI) / 180);
+  // Work in meters with p at (0, 0)
+  const ax = (a.lng - p.lng) * M_PER_DEG_LNG;
+  const ay = (a.lat - p.lat) * M_PER_DEG_LAT;
+  const bx = (b.lng - p.lng) * M_PER_DEG_LNG;
+  const by = (b.lat - p.lat) * M_PER_DEG_LAT;
+  const dx = bx - ax;
+  const dy = by - ay;
+  const lengthSquared = dx * dx + dy * dy;
+  let t = lengthSquared === 0 ? 0 : -(ax * dx + ay * dy) / lengthSquared;
+  t = Math.max(0, Math.min(1, t));
+  const px = ax + t * dx;
+  const py = ay + t * dy;
+  return {
+    lat: p.lat + py / M_PER_DEG_LAT,
+    lng: p.lng + px / M_PER_DEG_LNG,
+    distance: Math.hypot(px, py),
+  };
+}
+
+const round2 = (x) => Math.round(x * 100) / 100;
+
+// A dead end is a point with only ONE path attached
+const degree = new Map();
+for (const e of edges) {
+  degree.set(e.from, (degree.get(e.from) || 0) + 1);
+  degree.set(e.to, (degree.get(e.to) || 0) + 1);
+}
+const deadEnds = [...degree.keys()].filter((id) => degree.get(id) === 1);
+let joinedCount = 0;
+
+for (const id of deadEnds) {
+  const p = nodes.get(id);
+
+  // The one neighbor of this dead end. Paths touching it do not count as "another path".
+  const own = edges.find((e) => e.from === id || e.to === id);
+  const neighbor = own.from === id ? own.to : own.from;
+
+  let best = null;
+  for (const e of edges) {
+    if (e.from === id || e.to === id || e.from === neighbor || e.to === neighbor) continue;
+    const hit = projectOnSegment(p, nodes.get(e.from), nodes.get(e.to));
+    if (!best || hit.distance < best.distance) best = { ...hit, edge: e };
+  }
+  if (!best || best.distance > JOIN_DISTANCE_M) continue;
+
+  const a = nodes.get(best.edge.from);
+  const b = nodes.get(best.edge.to);
+  const alongA = haversine(a.lat, a.lng, best.lat, best.lng);
+  const alongB = haversine(b.lat, b.lng, best.lat, best.lng);
+
+  let target;
+  if (alongA < 0.5) {
+    target = a.id; // it meets the other path right at one of its corners
+  } else if (alongB < 0.5) {
+    target = b.id;
+  } else {
+    // Cut the other path in two at the meeting point
+    target = nextNewId++;
+    nodes.set(target, { id: target, lat: best.lat, lng: best.lng });
+    edges.splice(edges.indexOf(best.edge), 1);
+    edges.push(
+      { from: best.edge.from, to: target, distance: round2(alongA) },
+      { from: target, to: best.edge.to, distance: round2(alongB) }
+    );
+  }
+
+  const t = nodes.get(target);
+  edges.push({ from: id, to: target, distance: round2(haversine(p.lat, p.lng, t.lat, t.lng)) });
+  joinedCount++;
+  console.log(
+    `Joined dead end ${id} (${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}) to a path ${best.distance.toFixed(1)} m away`
+  );
+}
+console.log(`Dead ends joined to a nearby path: ${joinedCount} (of ${deadEnds.length} dead ends)\n`);
+
 // ---------- Step 3: throw away everything too far from the campus ----------
 const nearIds = new Set();
 for (const n of nodes.values()) {
